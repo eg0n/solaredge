@@ -5,6 +5,54 @@ import struct
 
 logger = logging.getLogger(__name__)
 
+TEXT_MAPS = {
+    "i_status": {
+        1: "Off",
+        2: "Sleeping",
+        3: "Starting",
+        4: "Producing",
+        5: "Throttled",
+        6: "Shutting Down",
+        7: "Fault",
+        8: "Standby",
+    },
+    "c_sunspec_did": {
+        101: "Single Phase Inverter",
+        102: "Split Phase Inverter",
+        103: "Three Phase Inverter",
+        201: "Single Phase Meter",
+        202: "Split Phase Meter",
+        203: "Wye 3P1N Three Phase Meter",
+        204: "Delta 3P Three Phase Meter",
+        802: "Battery",
+        803: "Lithium Ion Bank Battery",
+        804: "Lithium Ion String Battery",
+        805: "Lithium Ion Module Battery",
+        806: "Flow Battery",
+        807: "Flow String Battery",
+        808: "Flow Module Battery",
+        809: "Flow Stack Battery",
+    },
+    "b_status": {
+        0: "Off",
+        1: "Standby",
+        2: "Init",
+        3: "Charge",
+        4: "Discharge",
+        5: "Fault",
+        6: "Idle",
+    },
+    "b_status_internal": {
+        0: "Off",
+        1: "Standby",
+        2: "Init",
+        3: "Charge",
+        4: "Discharge",
+        5: "Fault",
+        6: "Idle",
+    },
+}
+
 
 class HoldingRegister:
     """
@@ -66,16 +114,30 @@ class HoldingRegister:
                     val = round(val, abs(sf))
         return val
 
+    @property
+    def text_value(self) -> str | None:
+        """
+        Looks up the text representation if the register key
+        exists in the constant maps.
+        """
+        raw_val = self.device.data_cache.get(self.key)
+        if raw_val is not None and self.key in TEXT_MAPS:
+            return TEXT_MAPS[self.key].get(raw_val)
+        return None
+
     def __str__(self):
         """The 'magic' print method."""
         val = self.value
         if val is None:
             return f"{self.label}: N/A"
-
+        if self.text_value:
+            return f"{self.label}: {self.text_value}"
         unit_str = f" {self.units}" if self.units else ""
         return f"{self.label}: {val}{unit_str}"
 
     def __repr__(self):
+        if self.text_value:
+            return f"<HoldingRegister({self.label}={self.value} ({self.text_value}))>"
         return f"<HoldingRegister({self.label}={self.value})>"
 
     def decode(self, registers: list[int]) -> Any:
@@ -84,7 +146,9 @@ class HoldingRegister:
 
         # 1. Byte packing based on word order
         format_char = ">" if self.word_order == "big" else "<"
-        byte_buffer = b"".join([struct.pack(f"{format_char}H", r & 0xFFFF) for r in registers])
+        byte_buffer = b"".join(
+            [struct.pack(f"{format_char}H", r & 0xFFFF) for r in registers]
+        )
 
         # 2. String Handling
         if self.data_type == mcm.DATATYPE.STRING:

@@ -12,9 +12,15 @@ class MockDevice(SolaredgeDevice):
     def __init__(self):
         super().__init__(id=1)
         self.registers = {
-            "pwr": HoldingRegister(0x9C93, mcm.DATATYPE.INT16, self, label="Power", units="W"),
-            "pwr_sf": HoldingRegister(0x9C94, mcm.DATATYPE.INT16, self, label="Power SF"),
-            "model": HoldingRegister(0x9C54, mcm.DATATYPE.STRING, self, length=16, label="Model"),
+            "pwr": HoldingRegister(
+                0x9C93, mcm.DATATYPE.INT16, self, label="Power", units="W"
+            ),
+            "pwr_sf": HoldingRegister(
+                0x9C94, mcm.DATATYPE.INT16, self, label="Power SF"
+            ),
+            "model": HoldingRegister(
+                0x9C54, mcm.DATATYPE.STRING, self, length=16, label="Model"
+            ),
         }
         self._init_registers()
 
@@ -95,7 +101,8 @@ async def test_update_lifecycle(device, mock_client):
     # We simulate two different calls for the two groups
     mock_client.read_holding_registers.side_effect = [
         MagicMock(
-            registers=list(struct.unpack(">16H", b"SE10K".ljust(32, b"\0"))), isError=lambda: False
+            registers=list(struct.unpack(">16H", b"SE10K".ljust(32, b"\0"))),
+            isError=lambda: False,
         ),
         MagicMock(registers=[3000, 0xFFFF], isError=lambda: False),
     ]
@@ -118,7 +125,11 @@ def test_grouping_max_read_length_split(device):
     for i in range(5):
         key = f"reg_{i}"
         test_regs[key] = HoldingRegister(
-            address=0x100 + i, data_type=mcm.DATATYPE.UINT16, device=device, length=1, key=key
+            address=0x100 + i,
+            data_type=mcm.DATATYPE.UINT16,
+            device=device,
+            length=1,
+            key=key,
         )
 
     device.registers = test_regs

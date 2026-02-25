@@ -17,7 +17,11 @@ async def main():
     await c.connect()
     d = SolaredgeInverter(args.device)
     await d.update(c)
-    [print(f"{k:<20s} => {str(v):20s}") for k, v in d.registers.items()]
+    [
+        print(f"{k:<20s} => {str(v):20s}")
+        for k, v in d.registers.items()
+        if not k.endswith("_sf")
+    ]
 
 
 if __name__ == "__main__":

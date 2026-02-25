@@ -38,7 +38,9 @@ class SolaredgeDevice:
         # 2. Update the cache (this is what the registers will point to)
         self.data_cache.update(raw_data)
 
-    def group_registers(self, max_read_length: int = 120) -> list[list[HoldingRegister]]:
+    def group_registers(
+        self, max_read_length: int = 120
+    ) -> list[list[HoldingRegister]]:
         """
         Groups registers into contiguous blocks based on:
         1. Adjacency (address + length == next_address)

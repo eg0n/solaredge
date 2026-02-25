@@ -14,7 +14,9 @@ class SolaredgeInverter(SolaredgeDevice):
             "c_manufacturer": HoldingRegister(
                 0x9C44, mcm.DATATYPE.STRING, self, 16, "big", "Manufacturer", None
             ),
-            "c_model": HoldingRegister(0x9C54, mcm.DATATYPE.STRING, self, 16, "big", "Model", None),
+            "c_model": HoldingRegister(
+                0x9C54, mcm.DATATYPE.STRING, self, 16, "big", "Model", None
+            ),
             "c_version": HoldingRegister(
                 0x9C6C, mcm.DATATYPE.STRING, self, 8, "big", "Version", None
             ),
@@ -165,7 +167,9 @@ class SolaredgeInverter(SolaredgeDevice):
                 "AC Frequency Scale Factor",
                 None,
             ),
-            "i_ac_va": HoldingRegister(0x9C97, mcm.DATATYPE.INT16, self, 1, "big", "AC VA", "VA"),
+            "i_ac_va": HoldingRegister(
+                0x9C97, mcm.DATATYPE.INT16, self, 1, "big", "AC VA", "VA"
+            ),
             "i_ac_va_sf": HoldingRegister(
                 0x9C98, mcm.DATATYPE.INT16, self, 1, "big", "AC VA Scale Factor", None
             ),
@@ -175,7 +179,9 @@ class SolaredgeInverter(SolaredgeDevice):
             "i_ac_var_sf": HoldingRegister(
                 0x9C9A, mcm.DATATYPE.INT16, self, 1, "big", "AC VAR Scale Factor", None
             ),
-            "i_ac_pf": HoldingRegister(0x9C9B, mcm.DATATYPE.INT16, self, 1, "big", "AC PF", "%"),
+            "i_ac_pf": HoldingRegister(
+                0x9C9B, mcm.DATATYPE.INT16, self, 1, "big", "AC PF", "%"
+            ),
             "i_ac_pf_sf": HoldingRegister(
                 0x9C9C, mcm.DATATYPE.INT16, self, 1, "big", "AC PF Scale Factor", None
             ),
