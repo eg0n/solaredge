@@ -1,0 +1,16 @@
+[project]
+name = "solaredge"
+authors = [ { name = "Adam Brown", email = "egon@fivefuses.com" } ]
+version = "0.1.0"
+license = "GPL-3.0-or-later"
+description = "Modbus interface to SolarEdge devices"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "pymodbus>=3.12.1",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.15.2",
+]

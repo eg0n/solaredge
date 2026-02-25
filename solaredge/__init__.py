@@ -1,0 +1,23 @@
+from enum import StrEnum
+
+
+class SunspecDid(StrEnum):
+    """
+    Enum mapping device types to their numeric identifiers
+    """
+
+    SINGLE_PHASE_INVERTER = "101"
+    SPLIT_PHASE_INVERTER = "102"
+    THREE_PHASE_INVERTER = "103"
+    SINGLE_PHASE_METER = "201"
+    SPLIT_PHASE_METER = "202"
+    WYE_3P1N_THREE_PHASE_METER = "203"
+    DELTA_3P_THREE_PHASE_METER = "204"
+    BATTERY = "802"
+    LITHIUM_ION_BANK_BATTERY = "803"
+    LITHIUM_ION_STRING_BATTERY = "804"
+    LITHIUM_ION_MODULE_BATTERY = "805"
+    FLOW_BATTERY = "806"
+    FLOW_STRING_BATTERY = "807"
+    FLOW_MODULE_BATTERY = "808"
+    FLOW_STACK_BATTERY = "809"
