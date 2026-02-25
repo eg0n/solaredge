@@ -1,6 +1,5 @@
 from solaredge.inverter import SolaredgeInverter
 from pymodbus.client import AsyncModbusTcpClient
-from solaredge.register import apply_scale_factors
 from argparse import ArgumentParser
 import asyncio
 import logging
@@ -17,8 +16,8 @@ async def main():
     c = AsyncModbusTcpClient("192.168.153.2", port=1502)
     await c.connect()
     d = SolaredgeInverter(args.device)
-    v = await d.read_groups(c)
-    logger.info(apply_scale_factors(v))
+    await d.update(c)
+    [print(f"{k:<20s} => {str(v):20s}") for k, v in d.registers.items()]
 
 
 if __name__ == "__main__":

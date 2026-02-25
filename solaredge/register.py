@@ -26,19 +26,57 @@ class HoldingRegister:
         self,
         address: int,
         data_type: mcm.DATATYPE,
-        device: object,
+        device: object, # "SolaredgeDevice"
         length: int = 1,
         word_order: str = "big",
         label: str | None = None,
         units: str | None = None,
+        key: str | None = None,
+        sf_key: str | None = None,
     ):
         self.address = address
+        self.data_type = data_type
+        self.device = device  # Reference back to the Inverter/Battery
         self.length = length
         self.word_order = word_order
-        self.data_type = data_type
-        self.device = device
         self.label = label
         self.units = units
+        self.key = key  # e.g., "i_ac_power"
+        self.sf_key = sf_key  # e.g., "i_ac_power_sf"
+
+    @property
+    def raw_value(self):
+        """Pulls the latest raw decoded value from the device cache."""
+        return self.device.data_cache.get(self.key)
+
+    @property
+    def value(self):
+        """Calculates the scaled value using the device cache."""
+        val = self.raw_value
+        if val is None:
+            return None
+
+        # If there is a scale factor, apply it
+        if self.sf_key:
+            sf = self.device.data_cache.get(self.sf_key)
+            if sf is not None:
+                val = val * (10**sf)
+                # Round based on the scale factor precision
+                if sf < 0:
+                    val = round(val, abs(sf))
+        return val
+
+    def __str__(self):
+        """The 'magic' print method."""
+        val = self.value
+        if val is None:
+            return f"{self.label}: N/A"
+
+        unit_str = f" {self.units}" if self.units else ""
+        return f"{self.label}: {val}{unit_str}"
+
+    def __repr__(self):
+        return f"<HoldingRegister({self.label}={self.value})>"
 
     def decode(self, registers: list[int]) -> Any:
         if not registers:
@@ -86,41 +124,3 @@ class HoldingRegister:
             return raw_val
         except struct.error:
             return None
-
-
-def apply_scale_factors(data: dict[str, Any]) -> dict[str, Any]:
-    """
-    Identifies scale factor registers (ending in "Scale Factor") and applies
-    them to their respective base registers.
-    """
-    scaled_data = data.copy()
-
-    # 1. Identify all scale factor keys in the current dataset
-    sf_keys = [k for k in data.keys() if k.endswith("Scale Factor")]
-
-    for sf_key in sf_keys:
-        base_text = sf_key[:-13]
-        for base_key in filter(lambda k: base_text in k, data.keys()):
-            if data[sf_key] is not None and data[base_key] is not None:
-                raw_value = data[base_key]
-                sf_value = data[sf_key]
-
-                # 2. Handle the "SunSpec" scale factor logic
-                # SF is a signed 16-bit integer (e.g., -2 means 10^-2 or 0.01)
-                try:
-                    # We use 10 ** sf_value for the multiplier
-                    multiplier = 10**sf_value
-                    scaled_data[base_key] = raw_value * multiplier
-
-                    # Optional: Round to avoid float precision artifacts (e.g., 0.000000001)
-                    if sf_value < 0:
-                        scaled_data[base_key] = round(
-                            scaled_data[base_key], abs(sf_value)
-                        )
-
-                except TypeError, ValueError:
-                    # Skip if the raw value isn't a number
-                    continue
-        del scaled_data[sf_key]
-
-    return scaled_data

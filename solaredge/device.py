@@ -13,15 +13,32 @@ class SolaredgeDevice:
     id: int
     offset: int
     registers: list[HoldingRegister]
+    data_cache: dict[str, list[int]]
 
     def __init__(self, id: int, offset: int = 0):
         self.id = id
         self.offset = offset
-        self.registers = {}
+        self.registers = {}  # Dictionary of HoldingRegister objects
+        self.data_cache = {}  # Stores the results of the last read
 
-    def group_registers(
-        self, max_read_length: int = 120
-    ) -> list[list[HoldingRegister]]:
+    def _init_registers(self):
+        """Helper to let registers know their own keys and SF keys."""
+        for key, reg in self.registers.items():
+            reg.key = key
+            # Auto-detect scale factor if it exists in the dict
+            sf_candidate = f"{key}_sf"
+            if reg.sf_key is None and sf_candidate in self.registers:
+                reg.sf_key = sf_candidate
+
+    async def update(self, client):
+        """Bulk read and update the internal cache."""
+        # 1. Use the grouping/reading logic we built previously
+        raw_data = await self.read_groups(client)
+
+        # 2. Update the cache (this is what the registers will point to)
+        self.data_cache.update(raw_data)
+
+    def group_registers(self, max_read_length: int = 120) -> list[list[HoldingRegister]]:
         """
         Groups registers into contiguous blocks based on:
         1. Adjacency (address + length == next_address)
@@ -101,8 +118,6 @@ class SolaredgeDevice:
                 # Extract the specific registers belonging to this 'HoldingRegister'
                 register_slice = raw_buffer[cursor : cursor + reg.length]
                 value = reg.decode(register_slice)
-                # Store by label or key
-                key = reg.label if reg.label else f"reg_{hex(reg.address)}"
-                decoded_data[key] = value
+                decoded_data[reg.key] = value
                 cursor += reg.length
         return decoded_data

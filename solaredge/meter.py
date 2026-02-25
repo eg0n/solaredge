@@ -76,6 +76,7 @@ class SolaredgeMeter(SolaredgeDevice):
                 "big",
                 "AC Current Phase A",
                 "A",
+                sf_key="m_ac_current_sf",
             ),
             "m_ac_currentb": HoldingRegister(
                 self.base + 0x49,
@@ -85,6 +86,7 @@ class SolaredgeMeter(SolaredgeDevice):
                 "big",
                 "AC Current Phase B",
                 "A",
+                sf_key="m_ac_current_sf",
             ),
             "m_ac_currentc": HoldingRegister(
                 self.base + 0x4A,
@@ -94,6 +96,7 @@ class SolaredgeMeter(SolaredgeDevice):
                 "big",
                 "AC Current Phase C",
                 "A",
+                sf_key="m_ac_current_sf",
             ),
             "m_ac_current_sf": HoldingRegister(
                 self.base + 0x4B,
@@ -112,6 +115,7 @@ class SolaredgeMeter(SolaredgeDevice):
                 "big",
                 "AC Voltage Phase AB",
                 "V",
+                sf_key="m_ac_voltage_sf",
             ),
             "m_ac_voltagebc": HoldingRegister(
                 self.base + 0x4D,
@@ -121,6 +125,7 @@ class SolaredgeMeter(SolaredgeDevice):
                 "big",
                 "AC Voltage Phase BC",
                 "V",
+                sf_key="m_ac_voltage_sf",
             ),
             "m_ac_voltageca": HoldingRegister(
                 self.base + 0x4E,
@@ -130,6 +135,7 @@ class SolaredgeMeter(SolaredgeDevice):
                 "big",
                 "AC Voltage Phase CA",
                 "V",
+                sf_key="m_ac_voltage_sf",
             ),
             "m_ac_voltagean": HoldingRegister(
                 self.base + 0x4F,
@@ -139,6 +145,7 @@ class SolaredgeMeter(SolaredgeDevice):
                 "big",
                 "AC Voltage Phase AN",
                 "V",
+                sf_key="m_ac_voltage_sf",
             ),
             "m_ac_voltagebn": HoldingRegister(
                 self.base + 0x50,
@@ -148,6 +155,7 @@ class SolaredgeMeter(SolaredgeDevice):
                 "big",
                 "AC Voltage Phase BN",
                 "V",
+                sf_key="m_ac_voltage_sf",
             ),
             "m_ac_voltagecn": HoldingRegister(
                 self.base + 0x51,
@@ -157,6 +165,7 @@ class SolaredgeMeter(SolaredgeDevice):
                 "big",
                 "AC Voltage Phase CN",
                 "V",
+                sf_key="m_ac_voltage_sf",
             ),
             "m_ac_voltage_sf": HoldingRegister(
                 self.base + 0x52,
@@ -196,6 +205,7 @@ class SolaredgeMeter(SolaredgeDevice):
                 "big",
                 "AC Power Phase A",
                 "W",
+                sf_key="m_ac_power_sf",
             ),
             "m_ac_powerb": HoldingRegister(
                 self.base + 0x57,
@@ -205,6 +215,7 @@ class SolaredgeMeter(SolaredgeDevice):
                 "big",
                 "AC Power Phase B",
                 "W",
+                sf_key="m_ac_power_sf",
             ),
             "m_ac_powerc": HoldingRegister(
                 self.base + 0x58,
@@ -214,6 +225,7 @@ class SolaredgeMeter(SolaredgeDevice):
                 "big",
                 "AC Power Phase C",
                 "W",
+                sf_key="m_ac_power_sf",
             ),
             "m_ac_power_sf": HoldingRegister(
                 self.base + 0x59,
@@ -235,6 +247,7 @@ class SolaredgeMeter(SolaredgeDevice):
                 "big",
                 "AC VA Phase A",
                 "VA",
+                sf_key="m_ac_va_sf",
             ),
             "m_ac_vab": HoldingRegister(
                 self.base + 0x5C,
@@ -244,6 +257,7 @@ class SolaredgeMeter(SolaredgeDevice):
                 "big",
                 "AC VA Phase B",
                 "VA",
+                sf_key="m_ac_va_sf",
             ),
             "m_ac_vac": HoldingRegister(
                 self.base + 0x5D,
@@ -253,6 +267,7 @@ class SolaredgeMeter(SolaredgeDevice):
                 "big",
                 "AC VA Phase C",
                 "VA",
+                sf_key="m_ac_va_sf",
             ),
             "m_ac_va_sf": HoldingRegister(
                 self.base + 0x5E,
@@ -274,6 +289,7 @@ class SolaredgeMeter(SolaredgeDevice):
                 "big",
                 "AC VAR Phase A",
                 "VAR",
+                sf_key="m_ac_var_sf",
             ),
             "m_ac_varb": HoldingRegister(
                 self.base + 0x61,
@@ -283,6 +299,7 @@ class SolaredgeMeter(SolaredgeDevice):
                 "big",
                 "AC VAR Phase B",
                 "VAR",
+                sf_key="m_ac_var_sf",
             ),
             "m_ac_varc": HoldingRegister(
                 self.base + 0x62,
@@ -292,6 +309,7 @@ class SolaredgeMeter(SolaredgeDevice):
                 "big",
                 "AC VAR Phase C",
                 "VAR",
+                sf_key="m_ac_var_sf",
             ),
             "m_ac_var_sf": HoldingRegister(
                 self.base + 0x63,
@@ -313,6 +331,7 @@ class SolaredgeMeter(SolaredgeDevice):
                 "big",
                 "AC PF Phase A",
                 "%",
+                sf_key="m_ac_pf_sf",
             ),
             "m_ac_pfb": HoldingRegister(
                 self.base + 0x66,
@@ -322,6 +341,7 @@ class SolaredgeMeter(SolaredgeDevice):
                 "big",
                 "AC PF Phase B",
                 "%",
+                sf_key="m_ac_pf_sf",
             ),
             "m_ac_pfc": HoldingRegister(
                 self.base + 0x67,
@@ -331,6 +351,7 @@ class SolaredgeMeter(SolaredgeDevice):
                 "big",
                 "AC PF Phase C",
                 "%",
+                sf_key="m_ac_pf_sf",
             ),
             "m_ac_pf_sf": HoldingRegister(
                 self.base + 0x68,
@@ -394,6 +415,7 @@ class SolaredgeMeter(SolaredgeDevice):
                 "big",
                 "Total Imported Energy Phase A",
                 "Wh",
+                sf_key="m_energy_sf",
             ),
             "m_imported_b": HoldingRegister(
                 self.base + 0x75,
@@ -403,6 +425,7 @@ class SolaredgeMeter(SolaredgeDevice):
                 "big",
                 "Total Imported Energy Phase B",
                 "Wh",
+                sf_key="m_energy_sf",
             ),
             "m_imported_c": HoldingRegister(
                 self.base + 0x77,
@@ -412,6 +435,7 @@ class SolaredgeMeter(SolaredgeDevice):
                 "big",
                 "Total Imported Energy Phase C",
                 "Wh",
+                sf_key="m_energy_sf",
             ),
             "m_energy_sf": HoldingRegister(
                 self.base + 0x79,
@@ -423,3 +447,4 @@ class SolaredgeMeter(SolaredgeDevice):
                 None,
             ),
         }
+        self._init_registers()

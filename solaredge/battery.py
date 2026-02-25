@@ -228,3 +228,4 @@ class SolaredgeMeter(SolaredgeDevice):
                 None,
             ),
         }
+        self._init_registers()
