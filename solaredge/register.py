@@ -26,7 +26,7 @@ class HoldingRegister:
         self,
         address: int,
         data_type: mcm.DATATYPE,
-        device: object, # "SolaredgeDevice"
+        device: object,  # "SolaredgeDevice"
         length: int = 1,
         word_order: str = "big",
         label: str | None = None,
@@ -84,7 +84,7 @@ class HoldingRegister:
 
         # 1. Byte packing based on word order
         format_char = ">" if self.word_order == "big" else "<"
-        byte_buffer = b"".join([struct.pack(f"{format_char}H", r) for r in registers])
+        byte_buffer = b"".join([struct.pack(f"{format_char}H", r & 0xFFFF) for r in registers])
 
         # 2. String Handling
         if self.data_type == mcm.DATATYPE.STRING:

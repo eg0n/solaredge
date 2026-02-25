@@ -7,7 +7,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class SolaredgeMeter(SolaredgeDevice):
+class SolaredgeBattery(SolaredgeDevice):
     def __init__(self, id: int, offset: int = 0):
         super().__init__(id, offset)
         self.registers = {
