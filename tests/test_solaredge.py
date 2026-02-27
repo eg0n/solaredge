@@ -84,7 +84,7 @@ def test_cache_value_lookup(device):
     reg = device.registers["pwr"]
     # 1500 * 10^-1 = 150.0
     assert reg.value == 150.0
-    assert str(reg) == "Power: 150.0 W"
+    assert str(reg) == "150.0 W"
 
 
 # --- Async Integration Tests ---
