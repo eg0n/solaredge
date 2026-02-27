@@ -8,8 +8,8 @@ logger = logging.getLogger(__name__)
 
 
 class SolaredgeInverter(SolaredgeDevice):
-    def __init__(self, id: int, offset: int = 0):
-        super().__init__(id, offset)
+    def __init__(self, id: int, name: str = "", base: int = 0):
+        super().__init__(id, base=base, name=name or f"inverter_{id}")
         self.registers = {
             "c_manufacturer": HoldingRegister(
                 0x9C44, mcm.DATATYPE.STRING, self, 16, "big", "Manufacturer", None

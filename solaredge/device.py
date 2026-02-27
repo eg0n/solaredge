@@ -11,13 +11,14 @@ class SolaredgeDevice:
     """
 
     id: int
-    offset: int
+    base: int
     registers: list[HoldingRegister]
     data_cache: dict[str, list[int]]
 
-    def __init__(self, id: int, offset: int = 0):
+    def __init__(self, id: int, name: str = "", base: int = 0):
         self.id = id
-        self.offset = offset
+        self.name = name
+        self.base = base
         self.registers = {}  # Dictionary of HoldingRegister objects
         self.data_cache = {}  # Stores the results of the last read
 

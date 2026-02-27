@@ -8,8 +8,8 @@ logger = logging.getLogger(__name__)
 
 
 class SolaredgeBattery(SolaredgeDevice):
-    def __init__(self, id: int, offset: int = 0):
-        super().__init__(id, offset)
+    def __init__(self, id: int, name: str = "", base: int = 0):
+        super().__init__(id, base=base, name=name or f"battery_{id}_{hex(base)}")
         self.registers = {
             "c_manufacturer": HoldingRegister(
                 self.base + 0x0,
@@ -24,7 +24,13 @@ class SolaredgeBattery(SolaredgeDevice):
                 self.base + 0x10, mcm.DATATYPE.STRING, self, 16, "big", "Model", None
             ),
             "c_version": HoldingRegister(
-                self.base + 0x20, mcm.DATATYPE.STRING, self, 16, "big", "Version", None
+                self.base + 0x20,
+                mcm.DATATYPE.STRING,
+                self,
+                16,
+                "big",
+                "Version",
+                None,
             ),
             "c_serialnumber": HoldingRegister(
                 self.base + 0x30,
@@ -198,7 +204,13 @@ class SolaredgeBattery(SolaredgeDevice):
                 "%",
             ),
             "b_status": HoldingRegister(
-                self.base + 0x86, mcm.DATATYPE.UINT32, self, 2, "little", "Status", None
+                self.base + 0x86,
+                mcm.DATATYPE.UINT32,
+                self,
+                2,
+                "little",
+                "Status",
+                None,
             ),
             "b_status_internal": HoldingRegister(
                 self.base + 0x88,
