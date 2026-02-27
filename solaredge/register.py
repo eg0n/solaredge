@@ -129,11 +129,11 @@ class HoldingRegister:
         """The 'magic' print method."""
         val = self.value
         if val is None:
-            return f"{self.label}: N/A"
+            return "N/A"
         if self.text_value:
-            return f"{self.label}: {self.text_value}"
+            return self.text_value
         unit_str = f" {self.units}" if self.units else ""
-        return f"{self.label}: {val}{unit_str}"
+        return f"{val}{unit_str}"
 
     def __repr__(self):
         if self.text_value:

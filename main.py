@@ -2,7 +2,9 @@ from solaredge import SolaredgeMeter, SolaredgeInverter, METER_BASES
 from pymodbus.client import AsyncModbusTcpClient
 from argparse import ArgumentParser
 import asyncio
+import json
 import logging
+import sys
 
 logger = logging.getLogger(__name__)
 
@@ -16,18 +18,12 @@ async def main():
     await c.connect()
 
     # get data from all our devices
-    i1 = SolaredgeInverter(id=1)
-    await i1.update(c)
-    i2 = SolaredgeInverter(id=2)
-    await i2.update(c)
-    m = SolaredgeMeter(id=1, base=METER_BASES[0])
-    await m.update(c)
-    for d in (i1, i2, m):
-        [
-            print(f"{k:<20s} => {str(v):20s}")
-            for k, v in d.registers.items()
-            if not k.endswith("_sf")
-        ]
+    i1 = SolaredgeInverter(id=1, name="Inverter")
+    i2 = SolaredgeInverter(id=2, name="EV Charger")
+    m = SolaredgeMeter(id=1, base=METER_BASES[0], name="Meter")
+    for d in [i1, i2, m]:
+        await d.update(client=c)
+    json.dump({d.name: d.report() for d in [i1, i2, m]}, fp=sys.stdout, indent=2)
 
 
 if __name__ == "__main__":

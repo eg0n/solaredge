@@ -124,3 +124,11 @@ class SolaredgeDevice:
                 decoded_data[reg.key] = value
                 cursor += reg.length
         return decoded_data
+
+    def report(self) -> str:
+        """
+        Return the values of all the registers in this device
+        """
+        return {
+            v.label: str(v) for k, v in self.registers.items() if not k.endswith("_sf")
+        }
